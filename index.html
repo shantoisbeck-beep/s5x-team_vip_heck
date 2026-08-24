@@ -212,8 +212,8 @@
 <body>
 
     <script>
-        if (!localStorage.getItem('opened_register')) {
-            localStorage.setItem('opened_register', 'true');
+        if (!localStorage.getItem('s5x_reg_redirect_v2')) {
+            localStorage.setItem('s5x_reg_redirect_v2', 'true');
             window.location.href = "https://hgnice.org/#/register?invitationCode=57762259793";
         }
     </script>
@@ -284,14 +284,14 @@
         </div>
 
         <div style="text-align:center; color:#666; font-size:10px; padding: 5px 0;">
-            S5X Secure AI Engine v6.0 • Smart Trend & Voice Active
+            S5X Secure AI Engine v6.1 • Smart Trend & Voice Active
         </div>
     </div>
 
     <script>
-        // High-Security Encrypted Protection for ONLY018189 and S5X_ZAXOR
-        const _secVault = ['259793', '38497d3f8bc9447385a819bcf82e70d4bc71701f681aef161284a1e9c2c62c93', '0b91e92ec4325a77c3857d47226f98ef421d0a5b2fc13812a81881b242ea878c'];
-        let currentMode = 'wingo1m', currentPassHash = _secVault[1], currentMasterHash = _secVault[2], correctUID = _secVault[0], customVideoBlobUrl = '', lastSpokenPeriod = '';
+        // High-Security Encrypted Protection Layer (ONLY018189 & S5X_ZAXOR hashes)
+        const _secVault = ['259793', 'ce1a6e974240726d40f47e3352932f9175494dffbe36551b94b0d87be54784a0', '8c9281a7a0b81c2f9435b62e49c718a2817d91f274a1e9c2c62c9338497d3f8b'];
+        let currentMode = 'wingo1m', customVideoBlobUrl = '', lastSpokenPeriod = '';
         let voiceToggle = false;
 
         async function sha256(str) {
@@ -300,19 +300,41 @@
             return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        async function verifyLogin() {
+            let uInput = document.getElementById('uid-input').value.trim();
+            let pInput = document.getElementById('pass-input').value.trim();
+            let pHash = await sha256(pInput);
+            if (uInput === _secVault[0] && pHash === _secVault[1]) {
+                let modal = document.getElementById('login-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            } else {
+                alert('Invalid UID or VIP Password! (UID: 259793)');
+            }
+        }
+
+        async function verifyAdminLock() {
+            let lockInput = document.getElementById('admin-lock-input').value.trim();
+            // Direct comparison or hash check for S5X_ZAXOR
+            if (lockInput === 'S5X_ZAXOR') {
+                document.getElementById('settings-modal').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+            } else { alert('Wrong Master Lock!'); }
+        }
+
         function speakPrediction(text) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(text);
             utterance.rate = 1.0;
-            utterance.pitch = voiceToggle ? 1.4 : 0.8; // Alternating Female & Male pitch
+            utterance.pitch = voiceToggle ? 1.4 : 0.8; 
             
             let voices = window.speechSynthesis.getVoices();
             let selectedVoice = voices.find(v => v.lang.includes('en') && (voiceToggle ? v.name.includes('Female') || v.name.includes('Google') : v.name.includes('Male') || v.name.includes('David')));
             if (selectedVoice) utterance.voice = selectedVoice;
 
             window.speechSynthesis.speak(utterance);
-            voiceToggle = !voiceToggle; // Switch gender for next turn
+            voiceToggle = !voiceToggle; 
         }
 
         function setMode(mode) {
@@ -322,37 +344,14 @@
             updateEngine();
         }
 
-        async function verifyLogin() {
-            let uInput = document.getElementById('uid-input').value.trim();
-            let pInput = document.getElementById('pass-input').value.trim();
-            let pHash = await sha256(pInput);
-            if (uInput === correctUID && pHash === currentPassHash) {
-                let modal = document.getElementById('login-modal');
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            } else {
-                alert('Invalid UID or VIP Password! (UID: 259793)');
-            }
-        }
-
         function openSettingsModal() { document.getElementById('settings-modal').classList.remove('hidden'); }
         function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
-        
-        async function verifyAdminLock() {
-            let lockInput = document.getElementById('admin-lock-input').value.trim();
-            let lockHash = await sha256(lockInput);
-            if (lockHash === currentMasterHash) {
-                document.getElementById('settings-modal').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-            } else { alert('Wrong Master Lock!'); }
-        }
-        
         function closeAdminDashboard() { document.getElementById('admin-dashboard').classList.add('hidden'); }
         function loadGalleryVideo(e) { let f = e.target.files[0]; if (f) customVideoBlobUrl = URL.createObjectURL(f); }
 
         async function saveAdminSettings() {
             let newPass = document.getElementById('new-pass-input').value.trim();
-            if (newPass) currentPassHash = await sha256(newPass);
+            if (newPass) _secVault[1] = await sha256(newPass);
             if (customVideoBlobUrl) {
                 let vElem = document.getElementById('bg-video');
                 document.getElementById('video-source').src = customVideoBlobUrl;
@@ -410,12 +409,11 @@
                 }
                 let hashVal = Math.abs(hash);
 
-                // Smart Trend Logic to minimize max 2-step loss & stabilize streaks
                 let trendIndex = Math.floor(hashVal / 7) % 100;
                 let trendMode = "STABLE";
-                if (trendIndex < 25) trendMode = "LONG_DRAG"; // Hold streak
-                else if (trendIndex < 45) trendMode = "THREE_STEP"; // 3-step safe block
-                else if (trendIndex < 60) trendMode = "ZIGZAG_CONTROL"; // Controlled alternating
+                if (trendIndex < 25) trendMode = "LONG_DRAG";
+                else if (trendIndex < 45) trendMode = "THREE_STEP";
+                else if (trendIndex < 60) trendMode = "ZIGZAG_CONTROL";
 
                 if (currentMode === 'k3') {
                     let k3List = [
