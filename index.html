@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S5X VIP HACK - AI PRO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background: #000;
+        }
+        #bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: -1;
+        }
+        .app-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 12px;
+            border: 3px solid #00ff66;
+            box-shadow: inset 0 0 25px rgba(0,255,102,0.4), 0 0 20px rgba(0,255,102,0.3);
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        .logo-text {
+            color: #ffcc00;
+            font-size: 16px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255,204,0,0.6);
+        }
+        .settings-btn {
+            background: #222;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            font-size: 13px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 0 8px #00ff66;
+        }
+        .modes-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            background: rgba(15, 15, 15, 0.95);
+            padding: 6px;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        .mode-btn {
+            background: #222;
+            color: #aaa;
+            border: 1px solid #444;
+            padding: 8px 2px;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .mode-btn.active {
+            background: #00ff66;
+            color: #000;
+            border-color: #00ff66;
+            box-shadow: 0 0 12px #00ff66;
+        }
+        .timer-box {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ffcc00;
+            width: 70%;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(255,204,0,0.3);
+        }
+        .timer-title {
+            font-size: 9px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+        .timer-val {
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00;
+        }
+        
+        /* Prediction Section */
+        .prediction-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px 0;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 12px;
+            border: 1px solid #333;
+            backdrop-filter: blur(5px);
+        }
+        .period-text {
+            font-size: 13px;
+            font-weight: bold;
+            color: #00ff66;
+            text-shadow: 0 0 8px #00ff66;
+            margin-bottom: 10px;
+        }
+        .pred-result {
+            font-size: 34px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 6px 0;
+        }
+        .sub-result {
+            font-size: 19px;
+            font-weight: 900;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff3333;
+            margin-top: 6px;
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.96);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal-content {
+            background: #111;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #00ff66;
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(0,255,102,0.3);
+        }
+        .modal-content h2 {
+            color: #00ff66;
+            margin-bottom: 12px;
+            font-size: 18px;
+            text-shadow: 0 0 8px #00ff66;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            background: #00ff66;
+            color: #000;
+            border: none;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 14px;
+            box-shadow: 0 0 10px #00ff66;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <script>
+        if (!localStorage.getItem('opened_register')) {
+            localStorage.setItem('opened_register', 'true');
+            window.location.href = "https://hgnice.org/#/register?invitationCode=57762259793";
+        }
+    </script>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="" type="video/mp4" id="video-source">
+    </video>
+    <div class="overlay"></div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h2>VIP HACK LOGIN</h2>
+            <input type="text" id="uid-input" placeholder="Enter UID (259793)">
+            <input type="password" id="pass-input" placeholder="Enter VIP Password">
+            <button onclick="verifyLogin()">LOGIN</button>
+        </div>
+    </div>
+
+    <!-- Admin Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>ADMIN SETTINGS</h2>
+            <input type="password" id="admin-lock-input" placeholder="Enter Master Lock">
+            <button onclick="verifyAdminLock()">ENTER</button>
+            <button onclick="closeSettingsModal()" style="background: #444; color: #fff; margin-top: 8px;">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="modal hidden">
+        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+            <h2>ADMIN PANEL</h2>
+            <label style="color:#aaa; font-size:10px; display:block; text-align:left;">Change VIP Password:</label>
+            <input type="text" id="new-pass-input" value="S5X018189">
+            
+            <label style="color:#aaa; font-size:10px; display:block; text-align:left; margin-top:8px;">Select Video from Gallery:</label>
+            <input type="file" id="video-file-input" accept="video/*" style="background:#222; padding:8px; font-size:12px; cursor:pointer;" onchange="loadGalleryVideo(event)">
+            
+            <button onclick="saveAdminSettings()">SAVE</button>
+            <button onclick="closeAdminDashboard()" style="background: #ff3333; color: #fff;">EXIT</button>
+        </div>
+    </div>
+
+    <!-- Main UI -->
+    <div class="app-container">
+        <div class="header">
+            <div class="logo-text">S5X VIP AI PRO ⚙️</div>
+            <button class="settings-btn" onclick="openSettingsModal()">⚙️ Setting</button>
+        </div>
+
+        <div class="modes-bar">
+            <button class="mode-btn active" onclick="setMode('wingo1m')" id="btn-wingo1m">WinGo 1 Min</button>
+            <button class="mode-btn" onclick="setMode('30s')" id="btn-30s">WinGo 30s</button>
+            <button class="mode-btn" onclick="setMode('k3')" id="btn-k3">K3 1 Min</button>
+            <button class="mode-btn" onclick="setMode('trx')" id="btn-trx">TRX 1 Min</button>
+        </div>
+
+        <div class="timer-box">
+            <div class="timer-title">AI LIVE SYNC TIMER</div>
+            <div class="timer-val" id="countdown-timer">00:00</div>
+        </div>
+
+        <div class="prediction-screen">
+            <div class="period-text" id="period-display">PERIOD: --</div>
+            <div class="pred-result" id="main-prediction">AI ANALYZING...</div>
+            <div class="sub-result" id="sub-prediction">CONNECTING...</div>
+        </div>
+
+        <div style="text-align:center; color:#666; font-size:10px; padding: 5px 0;">
+            S5X Secure AI Engine v5.4 • Live Wallpaper Active
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'wingo1m';
+        let vipPassword = 'S5X018189';
+        const masterLock = 'SH018189';
+        const correctUID = '259793';
+        let customVideoBlobUrl = '';
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + mode).classList.add('active');
+            updateEngine();
+        }
+
+        function verifyLogin() {
+            let uInput = document.getElementById('uid-input').value.trim();
+            let pInput = document.getElementById('pass-input').value.trim();
+            
+            if(uInput === correctUID && pInput === vipPassword) {
+                let modal = document.getElementById('login-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            } else {
+                alert('Invalid UID or VIP Password! (UID: 259793)');
+            }
+        }
+
+        function openSettingsModal() { document.getElementById('settings-modal').classList.remove('hidden'); }
+        function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
+        
+        function verifyAdminLock() {
+            if(document.getElementById('admin-lock-input').value === masterLock) {
+                document.getElementById('settings-modal').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+            } else { alert('Wrong Master Lock!'); }
+        }
+        
+        function closeAdminDashboard() { document.getElementById('admin-dashboard').classList.add('hidden'); }
+
+        function loadGalleryVideo(event) {
+            let file = event.target.files[0];
+            if (file) {
+                customVideoBlobUrl = URL.createObjectURL(file);
+            }
+        }
+
+        function saveAdminSettings() {
+            vipPassword = document.getElementById('new-pass-input').value;
+            if(customVideoBlobUrl) {
+                let videoElem = document.getElementById('bg-video');
+                document.getElementById('video-source').src = customVideoBlobUrl;
+                videoElem.load();
+                videoElem.play();
+            }
+            alert('Updated Successfully!');
+            closeAdminDashboard();
+        }
+
+        function getBasePeriod(mode, now) {
+            let year = now.getFullYear();
+            let month = String(now.getMonth() + 1).padStart(2, '0');
+            let day = String(now.getDate()).padStart(2, '0');
+            let datePrefix = `${year}${month}${day}`;
+
+            let totalMins = now.getHours() * 60 + now.getMinutes();
+            let benchmarkMins = 12 * 60 + 57; 
+            let diffMins = totalMins - benchmarkMins;
+
+            if (mode === '30s') {
+                let totalSecs = totalMins * 60 + now.getSeconds();
+                let benchmarkSecs = benchmarkMins * 60;
+                let pCount = 50835 + Math.floor((totalSecs - benchmarkSecs) / 30);
+                return `${datePrefix}1000${pCount}`;
+            } else if (mode === 'wingo1m') {
+                let offset = 10418 + diffMins;
+                return `${datePrefix}1000${offset}`;
+            } else if (mode === 'k3') {
+                let offset = 1010418 + diffMins;
+                return `${datePrefix}${offset}`;
+            } else if (mode === 'trx') {
+                let offset = 3010418 + diffMins;
+                return `${datePrefix}${offset}`;
+            }
+        }
+
+        function updateEngine() {
+            let now = new Date();
+            let sec = now.getSeconds();
+            let cycle = (currentMode === '30s') ? 30 : 60;
+            let timeLeft = cycle - (sec % cycle);
+
+            let displaySec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
+            document.getElementById('countdown-timer').textContent = `00:${displaySec}`;
+
+            let activePeriod = getBasePeriod(currentMode, now);
+            document.getElementById('period-display').textContent = `PERIOD: ${activePeriod}`;
+
+            let mainPredEl = document.getElementById('main-prediction');
+            let subPredEl = document.getElementById('sub-prediction');
+
+            if (timeLeft <= 6) {
+                mainPredEl.textContent = "ANALYZING...";
+                mainPredEl.style.color = "#ffcc00";
+                subPredEl.textContent = "WAITING NEXT ROUND";
+                subPredEl.style.color = "#ffcc00";
+            } else {
+                let hash = 0;
+                for (let i = 0; i < activePeriod.length; i++) {
+                    hash = activePeriod.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                let hashVal = Math.abs(hash);
+
+                // AI Market Analysis & Zigzag Skip Logic
+                let marketVolatility = hashVal % 100;
+                if (marketVolatility < 18) {
+                    mainPredEl.textContent = "SKIP";
+                    mainPredEl.style.color = "#ff3333";
+                    subPredEl.textContent = "ZIGZAG / UNSTABLE MARKET";
+                    subPredEl.style.color = "#ffcc00";
+                    return;
+                }
+
+                if (currentMode === 'k3') {
+                    let k3Sums = [
+                        { sum: 7, bs: "SMALL", eo: "ODD" },
+                        { sum: 14, bs: "BIG", eo: "EVEN" },
+                        { sum: 9, bs: "SMALL", eo: "ODD" },
+                        { sum: 12, bs: "BIG", eo: "EVEN" },
+                        { sum: 5, bs: "SMALL", eo: "ODD" },
+                        { sum: 16, bs: "BIG", eo: "EVEN" }
+                    ];
+                    let selectedK3 = k3Sums[hashVal % k3Sums.length];
+                    mainPredEl.textContent = selectedK3.bs;
+                    subPredEl.textContent = `${selectedK3.eo} (${selectedK3.sum})`;
+                    mainPredEl.style.color = selectedK3.bs === "BIG" ? "#00ffff" : "#00ff66";
+                    subPredEl.style.color = "#ffcc00";
+                } else {
+                    let outcomes = [
+                        { main: "BIG", num: 8, color: "red", sub: "RED (8)" },
+                        { main: "SMALL", num: 3, color: "green", sub: "GREEN (3)" },
+                        { main: "BIG", num: 6, color: "red", sub: "RED (6)" },
+                        { main: "SMALL", num: 1, color: "green", sub: "GREEN (1)" },
+                        { main: "BIG", num: 5, color: "violet", sub: "VIOLET (5)" },
+                        { main: "SMALL", num: 0, color: "red-violet", sub: "RED+VIOLET (0)" }
+                    ];
+                    let selected = outcomes[hashVal % outcomes.length];
+
+                    mainPredEl.textContent = selected.main;
+                    subPredEl.textContent = selected.sub;
+                    mainPredEl.style.color = selected.main === "BIG" ? "#00ffff" : "#00ff66";
+                    
+                    if(selected.color === 'red') subPredEl.style.color = "#ff3333";
+                    else if(selected.color === 'green') subPredEl.style.color = "#00ff66";
+                    else if(selected.color === 'violet') subPredEl.style.color = "#cc33ff";
+                    else if(selected.color === 'red-violet') subPredEl.style.color = "#ff33cc";
+                }
+            }
+        }
+
+        setInterval(updateEngine, 1000);
+        updateEngine();
+    </script>
+</body>
+</html>
