@@ -119,8 +119,6 @@
             color: #ffcc00;
             text-shadow: 0 0 10px #ffcc00;
         }
-        
-        /* Prediction Section */
         .prediction-screen {
             display: flex;
             flex-direction: column;
@@ -156,8 +154,6 @@
             text-shadow: 0 0 10px #ff3333;
             margin-top: 6px;
         }
-
-        /* Modals */
         .modal {
             position: fixed;
             top: 0;
@@ -252,7 +248,7 @@
         <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
             <h2>ADMIN PANEL</h2>
             <label style="color:#aaa; font-size:10px; display:block; text-align:left;">Change VIP Password:</label>
-            <input type="text" id="new-pass-input" value="S5X018189">
+            <input type="text" id="new-pass-input" value="ONLY018189">
             
             <label style="color:#aaa; font-size:10px; display:block; text-align:left; margin-top:8px;">Select Video from Gallery:</label>
             <input type="file" id="video-file-input" accept="video/*" style="background:#222; padding:8px; font-size:12px; cursor:pointer;" onchange="loadGalleryVideo(event)">
@@ -293,166 +289,21 @@
     </div>
 
     <script>
-        let currentMode = 'wingo1m';
-        let vipPassword = 'S5X018189';
-        const masterLock = 'SH018189';
-        const correctUID = '259793';
-        let customVideoBlobUrl = '';
-
-        function setMode(mode) {
-            currentMode = mode;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + mode).classList.add('active');
-            updateEngine();
-        }
-
-        function verifyLogin() {
-            let uInput = document.getElementById('uid-input').value.trim();
-            let pInput = document.getElementById('pass-input').value.trim();
-            
-            if(uInput === correctUID && pInput === vipPassword) {
-                let modal = document.getElementById('login-modal');
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            } else {
-                alert('Invalid UID or VIP Password! (UID: 259793)');
-            }
-        }
-
-        function openSettingsModal() { document.getElementById('settings-modal').classList.remove('hidden'); }
-        function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
-        
-        function verifyAdminLock() {
-            if(document.getElementById('admin-lock-input').value === masterLock) {
-                document.getElementById('settings-modal').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-            } else { alert('Wrong Master Lock!'); }
-        }
-        
-        function closeAdminDashboard() { document.getElementById('admin-dashboard').classList.add('hidden'); }
-
-        function loadGalleryVideo(event) {
-            let file = event.target.files[0];
-            if (file) {
-                customVideoBlobUrl = URL.createObjectURL(file);
-            }
-        }
-
-        function saveAdminSettings() {
-            vipPassword = document.getElementById('new-pass-input').value;
-            if(customVideoBlobUrl) {
-                let videoElem = document.getElementById('bg-video');
-                document.getElementById('video-source').src = customVideoBlobUrl;
-                videoElem.load();
-                videoElem.play();
-            }
-            alert('Updated Successfully!');
-            closeAdminDashboard();
-        }
-
-        function getBasePeriod(mode, now) {
-            let year = now.getFullYear();
-            let month = String(now.getMonth() + 1).padStart(2, '0');
-            let day = String(now.getDate()).padStart(2, '0');
-            let datePrefix = `${year}${month}${day}`;
-
-            let totalMins = now.getHours() * 60 + now.getMinutes();
-            let benchmarkMins = 12 * 60 + 57; 
-            let diffMins = totalMins - benchmarkMins;
-
-            if (mode === '30s') {
-                let totalSecs = totalMins * 60 + now.getSeconds();
-                let benchmarkSecs = benchmarkMins * 60;
-                let pCount = 50835 + Math.floor((totalSecs - benchmarkSecs) / 30);
-                return `${datePrefix}1000${pCount}`;
-            } else if (mode === 'wingo1m') {
-                let offset = 10418 + diffMins;
-                return `${datePrefix}1000${offset}`;
-            } else if (mode === 'k3') {
-                let offset = 1010418 + diffMins;
-                return `${datePrefix}${offset}`;
-            } else if (mode === 'trx') {
-                let offset = 3010418 + diffMins;
-                return `${datePrefix}${offset}`;
-            }
-        }
-
-        function updateEngine() {
-            let now = new Date();
-            let sec = now.getSeconds();
-            let cycle = (currentMode === '30s') ? 30 : 60;
-            let timeLeft = cycle - (sec % cycle);
-
-            let displaySec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
-            document.getElementById('countdown-timer').textContent = `00:${displaySec}`;
-
-            let activePeriod = getBasePeriod(currentMode, now);
-            document.getElementById('period-display').textContent = `PERIOD: ${activePeriod}`;
-
-            let mainPredEl = document.getElementById('main-prediction');
-            let subPredEl = document.getElementById('sub-prediction');
-
-            if (timeLeft <= 6) {
-                mainPredEl.textContent = "ANALYZING...";
-                mainPredEl.style.color = "#ffcc00";
-                subPredEl.textContent = "WAITING NEXT ROUND";
-                subPredEl.style.color = "#ffcc00";
-            } else {
-                let hash = 0;
-                for (let i = 0; i < activePeriod.length; i++) {
-                    hash = activePeriod.charCodeAt(i) + ((hash << 5) - hash);
-                }
-                let hashVal = Math.abs(hash);
-
-                // AI Market Analysis & Zigzag Skip Logic
-                let marketVolatility = hashVal % 100;
-                if (marketVolatility < 18) {
-                    mainPredEl.textContent = "SKIP";
-                    mainPredEl.style.color = "#ff3333";
-                    subPredEl.textContent = "ZIGZAG / UNSTABLE MARKET";
-                    subPredEl.style.color = "#ffcc00";
-                    return;
-                }
-
-                if (currentMode === 'k3') {
-                    let k3Sums = [
-                        { sum: 7, bs: "SMALL", eo: "ODD" },
-                        { sum: 14, bs: "BIG", eo: "EVEN" },
-                        { sum: 9, bs: "SMALL", eo: "ODD" },
-                        { sum: 12, bs: "BIG", eo: "EVEN" },
-                        { sum: 5, bs: "SMALL", eo: "ODD" },
-                        { sum: 16, bs: "BIG", eo: "EVEN" }
-                    ];
-                    let selectedK3 = k3Sums[hashVal % k3Sums.length];
-                    mainPredEl.textContent = selectedK3.bs;
-                    subPredEl.textContent = `${selectedK3.eo} (${selectedK3.sum})`;
-                    mainPredEl.style.color = selectedK3.bs === "BIG" ? "#00ffff" : "#00ff66";
-                    subPredEl.style.color = "#ffcc00";
-                } else {
-                    let outcomes = [
-                        { main: "BIG", num: 8, color: "red", sub: "RED (8)" },
-                        { main: "SMALL", num: 3, color: "green", sub: "GREEN (3)" },
-                        { main: "BIG", num: 6, color: "red", sub: "RED (6)" },
-                        { main: "SMALL", num: 1, color: "green", sub: "GREEN (1)" },
-                        { main: "BIG", num: 5, color: "violet", sub: "VIOLET (5)" },
-                        { main: "SMALL", num: 0, color: "red-violet", sub: "RED+VIOLET (0)" }
-                    ];
-                    let selected = outcomes[hashVal % outcomes.length];
-
-                    mainPredEl.textContent = selected.main;
-                    subPredEl.textContent = selected.sub;
-                    mainPredEl.style.color = selected.main === "BIG" ? "#00ffff" : "#00ff66";
-                    
-                    if(selected.color === 'red') subPredEl.style.color = "#ff3333";
-                    else if(selected.color === 'green') subPredEl.style.color = "#00ff66";
-                    else if(selected.color === 'violet') subPredEl.style.color = "#cc33ff";
-                    else if(selected.color === 'red-violet') subPredEl.style.color = "#ff33cc";
-                }
-            }
-        }
-
-        setInterval(updateEngine, 1000);
-        updateEngine();
+        // Encrypted & Obfuscated Protection Layer
+        const _0x1a2b=['259793','c48834925828b61c9443e26bbfa43d3b76a084ff01bc7754d92a065f42c23173','53e95088c42fb61cc96c21e64908a8f15bca1dfd71c1704e6c923363e813f8c8'];
+        let currentMode='wingo1m',currentPassHash=_0x1a2b[1],currentMasterHash=_0x1a2b[2],correctUID=_0x1a2b[0],customVideoBlobUrl='';
+        async function sha256(_0xd38e41){const _0x29ef1d=new TextEncoder().encode(_0xd38e41),_0x3e18a2=await crypto.subtle.digest('SHA-256',_0x29ef1d);return Array.from(new Uint8Array(_0x3e18a2)).map(_0x43063f=>_0x43063f.toString(16).padStart(2,'0')).join('');}
+        function setMode(_0x14fb29){currentMode=_0x14fb29;document.querySelectorAll('.mode-btn').forEach(_0x24ef16=>_0x24ef16.classList.remove('active'));document.getElementById('btn-'+_0x14fb29).classList.add('active');updateEngine();}
+        async function verifyLogin(){let _0x4d2149=document.getElementById('uid-input').value.trim(),_0x3e281a=document.getElementById('pass-input').value.trim(),_0x529182=await sha256(_0x3e281a);if(_0x4d2149===correctUID&&_0x529182===currentPassHash){let _0x1928ab=document.getElementById('login-modal');_0x1928ab.classList.add('hidden');_0x1928ab.style.display='none';}else{alert('Invalid UID or VIP Password! (UID: 259793)');}}
+        function openSettingsModal(){document.getElementById('settings-modal').classList.remove('hidden');}
+        function closeSettingsModal(){document.getElementById('settings-modal').classList.add('hidden');}
+        async function verifyAdminLock(){let _0x2189fa=document.getElementById('admin-lock-input').value.trim(),_0x19fa28=await sha256(_0x2189fa);if(_0x19fa28===currentMasterHash){document.getElementById('settings-modal').classList.add('hidden');document.getElementById('admin-dashboard').classList.remove('hidden');}else{alert('Wrong Master Lock!');}}
+        function closeAdminDashboard(){document.getElementById('admin-dashboard').classList.add('hidden');}
+        function loadGalleryVideo(_0x51829a){let _0x1829fa=_0x51829a.target.files[0];if(_0x1829fa){customVideoBlobUrl=URL.createObjectURL(_0x1829fa);}}
+        async function saveAdminSettings(){let _0x1982fa=document.getElementById('new-pass-input').value.trim();if(_0x1982fa){currentPassHash=await sha256(_0x1982fa);}if(customVideoBlobUrl){let _0x58291a=document.getElementById('bg-video');document.getElementById('video-source').src=customVideoBlobUrl;_0x58291a.load();_0x58291a.play();}alert('Updated Successfully!');closeAdminDashboard();}
+        function getBasePeriod(_0x59281a,_0x38291a){let _0x1982fa=_0x38291a.getFullYear(),_0x52918a=String(_0x38291a.getMonth()+1).padStart(2,'0'),_0x1829af=String(_0x38291a.getDate()).padStart(2,'0'),_0x5928fa=`${_0x1982fa}${_0x52918a}${_0x1829af}`,_0x3829fa=_0x38291a.getHours()*60+_0x38291a.getMinutes(),_0x1928fa=12*60+57,_0x5928ef=_0x3829fa-_0x1928fa;if(_0x59281a==='30s'){let _0x382ef9=_0x3829fa*60+_0x38291a.getSeconds(),_0x1982ef=_0x1928fa*60,_0x5291ef=50835+Math.floor((_0x382ef9-_0x1982ef)/30);return`${_0x5928fa}1000${_0x5291ef}`;}else if(_0x59281a==='wingo1m'){let _0x382ef9=10418+_0x5928ef;return`${_0x5928fa}1000${_0x382ef9}`;}else if(_0x59281a==='k3'){let _0x382ef9=1010418+_0x5928ef;return`${_0x5928fa}${_0x382ef9}`;}else if(_0x59281a==='trx'){let _0x382ef9=3010418+_0x5928ef;return`${_0x5928fa}${_0x382ef9}`;}}
+        function updateEngine(){let _0x5928fa=new Date(),_0x3829fa=_0x5928fa.getSeconds(),_0x1982fa=currentMode==='30s'?30:60,_0x52918a=_0x1982fa-(_0x3829fa%_0x1982fa),_0x1829af=_0x52918a<10?'0'+_0x52918a:_0x52918a;document.getElementById('countdown-timer').textContent=`00:${_0x1829af}`;let _0x5928ef=getBasePeriod(currentMode,_0x5928fa);document.getElementById('period-display').textContent=`PERIOD: ${_0x5928ef}`;let _0x382ef9=document.getElementById('main-prediction'),_0x1982ef=document.getElementById('sub-prediction');if(_0x52918a<=6){_0x382ef9.textContent="ANALYZING...";_0x382ef9.style.color="#ffcc00";_0x1982ef.textContent="WAITING NEXT ROUND";_0x1982ef.style.color="#ffcc00";}else{let _0x5291ef=0;for(let _0x14fb29=0;_0x14fb29<_0x5928ef.length;_0x14fb29++){_0x5291ef=_0x5928ef.charCodeAt(_0x14fb29)+((_0x5291ef<<5)-_0x5291ef);}let _0x24ef16=Math.abs(_0x5291ef);if(_0x24ef16%100<18){_0x382ef9.textContent="SKIP";_0x382ef9.style.color="#ff3333";_0x1982ef.textContent="ZIGZAG / UNSTABLE MARKET";_0x1982ef.style.color="#ffcc00";return;}if(currentMode==='k3'){let _0x4d2149=[{sum:7,bs:"SMALL",eo:"ODD"},{sum:14,bs:"BIG",eo:"EVEN"},{sum:9,bs:"SMALL",eo:"ODD"},{sum:12,bs:"BIG",eo:"EVEN"},{sum:5,bs:"SMALL",eo:"ODD"},{sum:16,bs:"BIG",eo:"EVEN"}],_0x3e281a=_0x4d2149[_0x24ef16%_0x4d2149.length];_0x382ef9.textContent=_0x3e281a.bs;_0x1982ef.textContent=`${_0x3e281a.eo} (${_0x3e281a.sum})`;_0x382ef9.style.color=_0x3e281a.bs==="BIG"?"#00ffff":"#00ff66";_0x1982ef.style.color="#ffcc00";}else{let _0x4d2149=[{main:"BIG",num:8,color:"red",sub:"RED (8)"},{main:"SMALL",num:3,color:"green",sub:"GREEN (3)"},{main:"BIG",num:6,color:"red",sub:"RED (6)"},{main:"SMALL",num:1,color:"green",sub:"GREEN (1)"},{main:"BIG",num:5,color:"violet",sub:"VIOLET (5)"},{main:"SMALL",num:0,color:"red-violet",sub:"RED+VIOLET (0)"}],_0x3e281a=_0x4d2149[_0x24ef16%_0x4d2149.length];_0x382ef9.textContent=_0x3e281a.main;_0x1982ef.textContent=_0x3e281a.sub;_0x382ef9.style.color=_0x3e281a.main==="BIG"?"#00ffff":"#00ff66";if(_0x3e281a.color==='red')_0x1982ef.style.color="#ff3333";else if(_0x3e281a.color==='green')_0x1982ef.style.color="#00ff66";else if(_0x3e281a.color==='violet')_0x1982ef.style.color="#cc33ff";else if(_0x3e281a.color==='red-violet')_0x1982ef.style.color="#ff33cc";}}}
+        setInterval(updateEngine,1000);updateEngine();
     </script>
 </body>
 </html>
