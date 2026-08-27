@@ -1,469 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S5X VIP HACK - AI PRO</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            background: #000;
-        }
-        #bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            object-fit: cover;
-            z-index: -2;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: -1;
-        }
-        .app-container {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 12px;
-            border: 3px solid #00ff66;
-            box-shadow: inset 0 0 25px rgba(0,255,102,0.4), 0 0 20px rgba(0,255,102,0.3);
-            position: relative;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(20, 20, 20, 0.95);
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #444;
-        }
-        .logo-text {
-            color: #ffcc00;
-            font-size: 16px;
-            font-weight: 900;
-            text-shadow: 0 0 10px rgba(255,204,0,0.6);
-        }
-        .settings-btn {
-            background: #222;
-            border: 1px solid #00ff66;
-            color: #00ff66;
-            font-size: 13px;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 0 8px #00ff66;
-        }
-        .modes-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
-            background: rgba(15, 15, 15, 0.95);
-            padding: 6px;
-            border-radius: 10px;
-            border: 1px solid #444;
-        }
-        .mode-btn {
-            background: #222;
-            color: #aaa;
-            border: 1px solid #444;
-            padding: 8px 2px;
-            font-size: 10px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .mode-btn.active {
-            background: #00ff66;
-            color: #000;
-            border-color: #00ff66;
-            box-shadow: 0 0 12px #00ff66;
-        }
-        .timer-box {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.85);
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #ffcc00;
-            width: 70%;
-            margin: 0 auto;
-            box-shadow: 0 0 10px rgba(255,204,0,0.3);
-        }
-        .timer-title {
-            font-size: 9px;
-            color: #aaa;
-            letter-spacing: 1px;
-        }
-        .timer-val {
-            font-size: 18px;
-            font-weight: 900;
-            color: #ffcc00;
-            text-shadow: 0 0 10px #ffcc00;
-        }
-        .prediction-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px 0;
-            background: rgba(10, 10, 10, 0.6);
-            border-radius: 12px;
-            border: 1px solid #333;
-            backdrop-filter: blur(5px);
-        }
-        .period-text {
-            font-size: 13px;
-            font-weight: bold;
-            color: #00ff66;
-            text-shadow: 0 0 8px #00ff66;
-            margin-bottom: 10px;
-        }
-        .pred-result {
-            font-size: 34px;
-            font-weight: 900;
-            color: #00ffff;
-            text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 6px 0;
-        }
-        .sub-result {
-            font-size: 19px;
-            font-weight: 900;
-            color: #ff3333;
-            text-shadow: 0 0 10px #ff3333;
-            margin-top: 6px;
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.96);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-        .modal-content {
-            background: #111;
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid #00ff66;
-            width: 85%;
-            max-width: 320px;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(0,255,102,0.3);
-        }
-        .modal-content h2 {
-            color: #00ff66;
-            margin-bottom: 12px;
-            font-size: 18px;
-            text-shadow: 0 0 8px #00ff66;
-        }
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            background: #222;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 6px;
-            font-size: 13px;
-            text-align: center;
-        }
-        .modal-content button {
-            width: 100%;
-            padding: 10px;
-            background: #00ff66;
-            color: #000;
-            border: none;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 8px;
-            font-size: 14px;
-            box-shadow: 0 0 10px #00ff66;
-        }
-        .hidden { display: none !important; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>S5X™_OWNER SHANTO 💸❤️‍🩹</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0f;
+    }
+    #splash-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+      pointer-events: none;
+    }
+    #splash-overlay.hide-splash {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .splash-glow {
+      font-size: clamp(1.4rem, 7vw, 3.2rem);
+      font-weight: 900;
+      color: #ffcc00;
+      text-shadow: 0 0 30px #ff8800, 0 0 70px #ff4400;
+      text-align: center;
+      padding: 0 20px;
+      line-height: 1.5;
+      letter-spacing: 3px;
+    }
+    .splash-sub {
+      margin-top: 24px;
+      font-size: clamp(0.8rem, 2.8vw, 1.3rem);
+      color: #00d9ff;
+      letter-spacing: 6px;
+      font-weight: 700;
+    }
+    .splash-loader {
+      margin-top: 36px;
+      width: 160px;
+      height: 4px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .splash-loader-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4400, #ffcc00, #00d9ff);
+      animation: loadBar 4s linear forwards;
+    }
+    @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
+
+    #game-frame {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 1; background: #000;
+    }
+    #hack-widget {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      width: 420px; max-height: 88vh;
+      z-index: 9998;
+      background: rgba(10, 10, 15, 0.97);
+      border-radius: 24px;
+      border: 2px solid #ffcc00;
+      box-shadow: 0 0 60px rgba(255, 204, 0, 0.25);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #hack-widget.minimized {
+      width: 68px; height: 68px; border-radius: 50%; cursor: pointer; border: 2.5px solid #ffcc00;
+    }
+    #hack-widget.minimized .widget-header,
+    #hack-widget.minimized .widget-body { display: none; }
+    #hack-widget.minimized .minimized-badge { display: flex; }
+    .minimized-badge {
+      display: none; font-size: 14px; font-weight: 900; color: #ffcc00;
+      align-items: center; justify-content: center; width: 100%; height: 100%; flex-direction: column;
+    }
+    .minimized-badge small { font-size: 7px; opacity: 0.7; }
+    .widget-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid rgba(255, 204, 0, 0.2);
+    }
+    .widget-title { color: #ffcc00; font-size: 10px; font-weight: 900; }
+    .widget-controls { display: flex; gap: 5px; }
+    .widget-controls button {
+      background: transparent; border: 1px solid rgba(255, 204, 0, 0.3); color: #ffcc00;
+      border-radius: 50%; width: 24px; height: 24px; font-size: 9px; cursor: pointer;
+    }
+    .widget-body { padding: 12px; overflow-y: auto; flex: 1; }
+    .hack-timer {
+      text-align: center; background: rgba(0, 0, 0, 0.5); padding: 4px;
+      border-radius: 10px; border: 1px solid rgba(255, 204, 0, 0.3); margin-bottom: 6px;
+    }
+    .hack-timer .timer-val { font-size: 20px; font-weight: 900; color: #ffcc00; }
+    .hack-modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-bottom: 6px; }
+    .hack-modes button {
+      background: #1a1a2e; color: #888; border: 1px solid #333; padding: 6px; font-size: 8px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    }
+    .hack-modes button.active { background: #ffcc00; color: #000; border-color: #ffcc00; }
+    .hack-prediction {
+      text-align: center; padding: 10px; background: rgba(0, 0, 0, 0.5); border-radius: 12px; border: 1px solid rgba(255, 204, 0, 0.15);
+    }
+    .hack-prediction .period { font-size: 8px; color: #ffcc00; }
+    .hack-prediction .result { font-size: 34px; font-weight: 900; color: #ffcc00; margin: 3px 0; }
+    .hack-prediction .result.skip { color: #ff4d6d !important; }
+    .hack-prediction .sub { font-size: 12px; font-weight: 700; color: #ffcc00; }
+    .hack-prediction .trend { font-size: 8px; color: #ffcc00; margin-top: 3px; }
+    .hack-prediction .confidence { font-size: 8px; color: #00ff66; margin-top: 2px; }
+    .pattern-box { margin-top: 6px; padding: 6px; border-radius: 8px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 204, 0, 0.1); }
+    .pattern-box .pattern-value { font-size: 11px; font-weight: 900; color: #ffcc00; }
+    .pattern-box .pattern-analysis { font-size: 7px; color: #aaa; margin-top: 2px; text-align: left; padding: 3px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+    .api-status { font-size: 7px; color: #888; text-align: center; margin-top: 4px; }
+    .api-status.connected { color: #00ff66; }
+    .api-status.disconnected { color: #ff6b6b; }
+    .api-status.syncing { color: #ffcc00; }
+    @media (max-width: 480px) {
+      #hack-widget { width: 310px; bottom: 10px; right: 10px; }
+    }
+  </style>
 </head>
 <body>
 
-    <script>
-        if (!localStorage.getItem('s5x_reg_redirect_v2')) {
-            localStorage.setItem('s5x_reg_redirect_v2', 'true');
-            window.location.href = "https://hgnice.org/#/register?invitationCode=57762259793";
-        }
-    </script>
+  <div id="splash-overlay">
+    <div class="splash-glow">S5X™_OWNER SHANTO 💸❤️‍🩹</div>
+    <div class="splash-sub">FAST ADAPT PERIOD SYNC V2.2</div>
+    <div class="splash-loader"><div class="splash-loader-bar"></div></div>
+  </div>
 
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="" type="video/mp4" id="video-source">
-    </video>
-    <div class="overlay"></div>
+  <iframe id="game-frame" src="https://hgnice.org/#/register?invitationCode=57762259793"></iframe>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <h2>VIP HACK LOGIN</h2>
-            <input type="text" id="uid-input" placeholder="Enter UID (259793)">
-            <input type="password" id="pass-input" placeholder="Enter VIP Password">
-            <button onclick="verifyLogin()">LOGIN</button>
-        </div>
+  <div id="hack-widget">
+    <div class="minimized-badge">S5X™<small>VIP</small></div>
+    <div class="widget-header">
+      <span class="widget-title">⚡ S5X™_OWNER SHANTO</span>
+      <div class="widget-controls">
+        <button onclick="minimizeWidget()" id="minimize-btn">─</button>
+      </div>
     </div>
-
-    <!-- Admin Settings Modal -->
-    <div id="settings-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2>ADMIN SETTINGS</h2>
-            <input type="password" id="admin-lock-input" placeholder="Enter Master Lock">
-            <button onclick="verifyAdminLock()">ENTER</button>
-            <button onclick="closeSettingsModal()" style="background: #444; color: #fff; margin-top: 8px;">CLOSE</button>
+    <div class="widget-body">
+      <div class="hack-timer">
+        <div class="timer-val" id="widget-timer">--s</div>
+      </div>
+      <div class="hack-modes">
+        <button onclick="switchGameMode('30S')" id="wbtn-30S">🚀 WinGo 30S</button>
+        <button class="active" onclick="switchGameMode('1M')" id="wbtn-1M">🔥 WinGo 1M</button>
+      </div>
+      <div class="hack-prediction">
+        <div class="period" id="widget-period">PERIOD: --</div>
+        <div class="result" id="widget-result">WAITING</div>
+        <div class="sub" id="widget-sub">CONNECTING...</div>
+        <div class="trend" id="widget-trend">📊 MARKET TREND</div>
+        <div class="confidence" id="widget-confidence">🎯 Confidence: --%</div>
+        <div class="pattern-box">
+          <div class="pattern-value" id="widget-pattern">ANALYZING...</div>
+          <div class="pattern-analysis" id="widget-analysis">Loading market data...</div>
         </div>
+        <div class="api-status" id="api-status">🔌 Connecting to API...</div>
+      </div>
     </div>
+  </div>
 
-    <!-- Admin Dashboard -->
-    <div id="admin-dashboard" class="modal hidden">
-        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
-            <h2>ADMIN PANEL</h2>
-            <label style="color:#aaa; font-size:10px; display:block; text-align:left;">Change VIP Password:</label>
-            <input type="text" id="new-pass-input" value="ONLY018189">
-            
-            <label style="color:#aaa; font-size:10px; display:block; text-align:left; margin-top:8px;">Select Video from Gallery:</label>
-            <input type="file" id="video-file-input" accept="video/*" style="background:#222; padding:8px; font-size:12px; cursor:pointer;" onchange="loadGalleryVideo(event)">
-            
-            <button onclick="saveAdminSettings()">SAVE</button>
-            <button onclick="closeAdminDashboard()" style="background: #ff3333; color: #fff;">EXIT</button>
-        </div>
-    </div>
+  <script>
+    setTimeout(() => {
+      const splash = document.getElementById('splash-overlay');
+      splash.classList.add('hide-splash');
+      setTimeout(() => { splash.style.display = 'none'; }, 900);
+    }, 4000);
 
-    <!-- Main UI -->
-    <div class="app-container">
-        <div class="header">
-            <div class="logo-text">S5X VIP AI PRO ⚙️</div>
-            <button class="settings-btn" onclick="openSettingsModal()">⚙️ Setting</button>
-        </div>
+    const WINGO_APIS = {
+      "30S": "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?pageNo=1&pageSize=50",
+      "1M": "https://draw.ar-lottery01.com/WinGo/WinGo_1Min/GetHistoryIssuePage.json?pageNo=1&pageSize=50"
+    };
 
-        <div class="modes-bar">
-            <button class="mode-btn active" onclick="setMode('wingo1m')" id="btn-wingo1m">WinGo 1 Min</button>
-            <button class="mode-btn" onclick="setMode('30s')" id="btn-30s">WinGo 30s</button>
-            <button class="mode-btn" onclick="setMode('k3')" id="btn-k3">K3 1 Min</button>
-            <button class="mode-btn" onclick="setMode('trx')" id="btn-trx">TRX 1 Min</button>
-        </div>
+    let activeGameMode = "1M";
+    let engineActive = true;
+    let lastProcessedIssue = "";
+    let isMinimized = false;
 
-        <div class="timer-box">
-            <div class="timer-title">AI LIVE SYNC TIMER</div>
-            <div class="timer-val" id="countdown-timer">00:00</div>
-        </div>
+    const colorRules = {
+      0: { name: 'RED/VIOLET', hex: '#cc33ff' },
+      1: { name: 'GREEN', hex: '#00c040' },
+      2: { name: 'RED', hex: '#ff3333' },
+      3: { name: 'GREEN', hex: '#00c040' },
+      4: { name: 'RED', hex: '#ff3333' },
+      5: { name: 'GREEN/VIOLET', hex: '#cc33ff' },
+      6: { name: 'RED', hex: '#ff3333' },
+      7: { name: 'GREEN', hex: '#00c040' },
+      8: { name: 'RED', hex: '#ff3333' },
+      9: { name: 'GREEN', hex: '#00c040' }
+    };
 
-        <div class="prediction-screen">
-            <div class="period-text" id="period-display">PERIOD: --</div>
-            <div class="pred-result" id="main-prediction">AI ANALYZING...</div>
-            <div class="sub-result" id="sub-prediction">CONNECTING...</div>
-        </div>
+    function advancedPatternAnalysis(historyList, nextIssueId) {
+      const history = historyList.map(item => {
+        const num = parseInt(item.number, 10);
+        return num >= 5 ? "BIG" : "SMALL";
+      });
 
-        <div style="text-align:center; color:#666; font-size:10px; padding: 5px 0;">
-            S5X Secure AI Engine v6.1 • Smart Trend & Voice Active
-        </div>
-    </div>
+      if (history.length < 3) {
+        return { bs: "SKIP", num: 0, trend: "📊 COLLECTING DATA", color: "#ffaa00", confidence: 0, analysis: "Not enough history. Skipping." };
+      }
 
-    <script>
-        // High-Security Encrypted Protection Layer (ONLY018189 & S5X_ZAXOR hashes)
-        const _secVault = ['259793', 'ce1a6e974240726d40f47e3352932f9175494dffbe36551b94b0d87be54784a0', '8c9281a7a0b81c2f9435b62e49c718a2817d91f274a1e9c2c62c9338497d3f8b'];
-        let currentMode = 'wingo1m', customVideoBlobUrl = '', lastSpokenPeriod = '';
-        let voiceToggle = false;
+      const recent = history.slice(0, 10);
 
-        async function sha256(str) {
-            const buffer = new TextEncoder().encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+      // ট্রেন্ড বা তান কাউন্ট (যেমন ২ বা ৩ বার টানা এক দিকে থাকলে)
+      let streakCount = 0;
+      let streakDirection = history[0];
+      for (let i = 0; i < history.length; i++) {
+        if (history[i] === streakDirection) streakCount++;
+        else break;
+      }
+
+      // জিগজ্যাগ কাউন্ট (মাত্র ২টি পরিবর্তন পেলেই ধরে নেবে)
+      let zigzagCount = 0;
+      for (let i = 0; i < history.length - 1; i++) {
+        if (history[i] !== history[i + 1]) zigzagCount++;
+        else break;
+      }
+
+      let predictedBS = "BIG";
+      let trendLabel = "📈 MARKET DYNAMICS";
+      let trendColor = "#00f5a0";
+      let confidence = 60;
+      let analysis = "";
+      let shouldSkip = false;
+
+      if (streakCount >= 2) {
+        predictedBS = streakDirection;
+        trendLabel = `🔥 TREND ACTIVE (${streakDirection} x${streakCount})`;
+        trendColor = "#f5b81b";
+        confidence = 70;
+        analysis = `Following active ${streakDirection} trend momentum.`;
+      } else if (zigzagCount >= 2) {
+        const last = history[0];
+        predictedBS = (last === "BIG") ? "SMALL" : "BIG";
+        trendLabel = `⚡ FAST ZIGZAG (${zigzagCount})`;
+        trendColor = "#00b4d8";
+        confidence = 65;
+        analysis = `Detected alternation. Switching to ${predictedBS}.`;
+      } else {
+        let bigScore = 0;
+        let smallScore = 0;
+        const weights = [5, 4, 3, 2, 1];
+        for (let i = 0; i < weights.length && i < recent.length; i++) {
+          if (recent[i] === "BIG") bigScore += weights[i];
+          else smallScore += weights[i];
         }
 
-        async function verifyLogin() {
-            let uInput = document.getElementById('uid-input').value.trim();
-            let pInput = document.getElementById('pass-input').value.trim();
-            let pHash = await sha256(pInput);
-            if (uInput === _secVault[0] && pHash === _secVault[1]) {
-                let modal = document.getElementById('login-modal');
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-            } else {
-                alert('Invalid UID or VIP Password! (UID: 259793)');
-            }
+        // যদি স্কোর সমান বা কাছাকাছি থাকে, তবে ভুল ট্রেড এড়াতে SKIP করবে
+        if (Math.abs(bigScore - smallScore) <= 1) {
+          shouldSkip = true;
+        } else {
+          predictedBS = (bigScore >= smallScore) ? "BIG" : "SMALL";
+          confidence = 55;
+          analysis = "Weighted calculation applied.";
         }
+      }
 
-        async function verifyAdminLock() {
-            let lockInput = document.getElementById('admin-lock-input').value.trim();
-            // Direct comparison or hash check for S5X_ZAXOR
-            if (lockInput === 'S5X_ZAXOR') {
-                document.getElementById('settings-modal').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-            } else { alert('Wrong Master Lock!'); }
+      if (shouldSkip) {
+        return { bs: "SKIP", num: 0, trend: "⚠️ UNSTABLE MARKET", color: "#ff4d6d", confidence: 0, analysis: "Accuracy mismatch. Skipping round to protect balance." };
+      }
+
+      let seed = 0;
+      for (let i = 0; i < nextIssueId.length; i++) {
+        seed = ((seed << 5) - seed) + nextIssueId.charCodeAt(i);
+        seed |= 0;
+      }
+      const numEntropy = Math.abs(Math.sin(seed * 9999));
+      const eligibleNums = (predictedBS === "BIG") ? [5, 6, 7, 8, 9] : [0, 1, 2, 3, 4];
+      let luckyNum = eligibleNums[Math.floor(numEntropy * eligibleNums.length)];
+      let colorInfo = colorRules[luckyNum] || { name: 'UNKNOWN', hex: '#ffffff' };
+
+      return {
+        bs: predictedBS,
+        num: luckyNum,
+        colorName: colorInfo.name,
+        colorHex: (luckyNum === 0 || luckyNum === 5) ? '#cc33ff' : colorInfo.hex,
+        trend: trendLabel,
+        color: trendColor,
+        confidence: Math.min(Math.max(confidence, 40), 95),
+        analysis
+      };
+    }
+
+    async function fetchAndAnalyzeMarket() {
+      if (!engineActive) return;
+      const apiUrl = WINGO_APIS[activeGameMode];
+      if (!apiUrl) return;
+      const statusEl = document.getElementById('api-status');
+
+      try {
+        const response = await fetch(apiUrl);
+        const json = await response.json();
+        if (!json || !json.data || !json.data.list || json.data.list.length === 0) return;
+
+        const latestItem = json.data.list[0];
+        const currentIssue = latestItem.issueNumber;
+        const nextIssueId = (BigInt(currentIssue) + 1n).toString();
+
+        if (lastProcessedIssue !== nextIssueId) {
+          lastProcessedIssue = nextIssueId;
+          const result = advancedPatternAnalysis(json.data.list, nextIssueId);
+          updateWidgetDisplay(result, nextIssueId);
+          statusEl.textContent = `✅ Live Synced (${nextIssueId.slice(-5)})`;
+          statusEl.className = 'api-status connected';
         }
+      } catch (err) {
+        statusEl.textContent = '⚠️ API Error - retrying...';
+        statusEl.className = 'api-status disconnected';
+      }
+    }
 
-        function speakPrediction(text) {
-            if (!('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
-            let utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 1.0;
-            utterance.pitch = voiceToggle ? 1.4 : 0.8; 
-            
-            let voices = window.speechSynthesis.getVoices();
-            let selectedVoice = voices.find(v => v.lang.includes('en') && (voiceToggle ? v.name.includes('Female') || v.name.includes('Google') : v.name.includes('Male') || v.name.includes('David')));
-            if (selectedVoice) utterance.voice = selectedVoice;
+    function updateWidgetDisplay(prediction, periodId) {
+      document.getElementById('widget-period').textContent = `PERIOD: ${periodId}`;
+      const resultEl = document.getElementById('widget-result');
+      const subEl = document.getElementById('widget-sub');
+      const trendEl = document.getElementById('widget-trend');
+      const confidenceEl = document.getElementById('widget-confidence');
+      const patternEl = document.getElementById('widget-pattern');
+      const analysisEl = document.getElementById('widget-analysis');
 
-            window.speechSynthesis.speak(utterance);
-            voiceToggle = !voiceToggle; 
-        }
+      if (prediction.bs === 'SKIP') {
+        resultEl.textContent = '⏭️ SKIP';
+        resultEl.className = 'result skip';
+        subEl.textContent = '⏳ WAITING MARKET';
+        confidenceEl.textContent = '🎯 Confidence: 0%';
+        trendEl.textContent = prediction.trend;
+        patternEl.textContent = '⚠️ UNSTABLE MARKET';
+        analysisEl.textContent = prediction.analysis;
+        return;
+      }
 
-        function setMode(mode) {
-            currentMode = mode;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + mode).classList.add('active');
-            updateEngine();
-        }
+      resultEl.textContent = prediction.bs;
+      resultEl.className = 'result';
+      resultEl.style.color = prediction.colorHex;
+      subEl.textContent = `${prediction.num} (${prediction.colorName})`;
+      subEl.style.color = prediction.colorHex;
+      trendEl.textContent = prediction.trend;
+      confidenceEl.textContent = `🎯 Confidence: ${Math.round(prediction.confidence)}%`;
+      patternEl.textContent = prediction.bs === 'BIG' ? '📈 BULLISH TREND' : '📉 BEARISH TREND';
+      analysisEl.textContent = prediction.analysis;
+    }
 
-        function openSettingsModal() { document.getElementById('settings-modal').classList.remove('hidden'); }
-        function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
-        function closeAdminDashboard() { document.getElementById('admin-dashboard').classList.add('hidden'); }
-        function loadGalleryVideo(e) { let f = e.target.files[0]; if (f) customVideoBlobUrl = URL.createObjectURL(f); }
+    function getTimerRemaining() {
+      const seconds = new Date().getSeconds();
+      return activeGameMode === "1M" ? (60 - seconds) : (30 - (seconds % 30));
+    }
 
-        async function saveAdminSettings() {
-            let newPass = document.getElementById('new-pass-input').value.trim();
-            if (newPass) _secVault[1] = await sha256(newPass);
-            if (customVideoBlobUrl) {
-                let vElem = document.getElementById('bg-video');
-                document.getElementById('video-source').src = customVideoBlobUrl;
-                vElem.load(); vElem.play();
-            }
-            alert('Updated Successfully!');
-            closeAdminDashboard();
-        }
+    setInterval(() => {
+      const remaining = getTimerRemaining();
+      document.getElementById('widget-timer').textContent = `${remaining}s`;
+      if (remaining === 60 || remaining === 30 || remaining === 1) {
+        fetchAndAnalyzeMarket();
+      }
+    }, 1000);
 
-        function getBasePeriod(mode, now) {
-            let year = now.getFullYear();
-            let month = String(now.getMonth() + 1).padStart(2, '0');
-            let day = String(now.getDate()).padStart(2, '0');
-            let datePrefix = `${year}${month}${day}`;
-            let totalMins = now.getHours() * 60 + now.getMinutes();
-            let benchmarkMins = 12 * 60 + 57; 
-            let diffMins = totalMins - benchmarkMins;
+    function switchGameMode(newMode) {
+      if (WINGO_APIS[newMode]) {
+        activeGameMode = newMode;
+        lastProcessedIssue = "";
+        document.querySelectorAll('.hack-modes button').forEach(b => b.classList.remove('active'));
+        document.getElementById('wbtn-' + newMode).classList.add('active');
+        fetchAndAnalyzeMarket();
+      }
+    }
 
-            if (mode === '30s') {
-                let totalSecs = totalMins * 60 + now.getSeconds();
-                let pCount = 50835 + Math.floor((totalSecs - (benchmarkMins * 60)) / 30);
-                return `${datePrefix}1000${pCount}`;
-            } else if (mode === 'wingo1m') {
-                return `${datePrefix}1000${10418 + diffMins}`;
-            } else if (mode === 'k3') {
-                return `${datePrefix}${1010418 + diffMins}`;
-            } else if (mode === 'trx') {
-                return `${datePrefix}${3010418 + diffMins}`;
-            }
-        }
+    function minimizeWidget() {
+      const widget = document.getElementById('hack-widget');
+      isMinimized = !isMinimized;
+      widget.classList.toggle('minimized');
+      document.getElementById('minimize-btn').textContent = isMinimized ? '□' : '─';
+    }
 
-        function updateEngine() {
-            let now = new Date();
-            let sec = now.getSeconds();
-            let cycle = (currentMode === '30s') ? 30 : 60;
-            let timeLeft = cycle - (sec % cycle);
-            let displaySec = timeLeft < 10 ? '0' + timeLeft : timeLeft;
-            document.getElementById('countdown-timer').textContent = `00:${displaySec}`;
-
-            let activePeriod = getBasePeriod(currentMode, now);
-            document.getElementById('period-display').textContent = `PERIOD: ${activePeriod}`;
-
-            let mainPredEl = document.getElementById('main-prediction');
-            let subPredEl = document.getElementById('sub-prediction');
-
-            if (timeLeft <= 6) {
-                mainPredEl.textContent = "ANALYZING...";
-                mainPredEl.style.color = "#ffcc00";
-                subPredEl.textContent = "WAITING NEXT ROUND";
-                subPredEl.style.color = "#ffcc00";
-            } else {
-                let hash = 0;
-                for (let i = 0; i < activePeriod.length; i++) {
-                    hash = activePeriod.charCodeAt(i) + ((hash << 5) - hash);
-                }
-                let hashVal = Math.abs(hash);
-
-                let trendIndex = Math.floor(hashVal / 7) % 100;
-                let trendMode = "STABLE";
-                if (trendIndex < 25) trendMode = "LONG_DRAG";
-                else if (trendIndex < 45) trendMode = "THREE_STEP";
-                else if (trendIndex < 60) trendMode = "ZIGZAG_CONTROL";
-
-                if (currentMode === 'k3') {
-                    let k3List = [
-                        { sum: 7, bs: "SMALL", eo: "ODD" },
-                        { sum: 14, bs: "BIG", eo: "EVEN" },
-                        { sum: 9, bs: "SMALL", eo: "ODD" },
-                        { sum: 12, bs: "BIG", eo: "EVEN" },
-                        { sum: 5, bs: "SMALL", eo: "ODD" },
-                        { sum: 16, bs: "BIG", eo: "EVEN" }
-                    ];
-                    let sel = k3List[hashVal % k3List.length];
-                    mainPredEl.textContent = sel.bs;
-                    subPredEl.textContent = `${sel.eo} (${sel.sum}) [${trendMode}]`;
-                    mainPredEl.style.color = sel.bs === "BIG" ? "#00ffff" : "#00ff66";
-                    subPredEl.style.color = "#ffcc00";
-
-                    if (lastSpokenPeriod !== activePeriod && timeLeft > 10) {
-                        speakPrediction(sel.bs);
-                        lastSpokenPeriod = activePeriod;
-                    }
-                } else {
-                    let outcomes = [
-                        { main: "BIG", num: 8, color: "red", sub: "RED (8)" },
-                        { main: "SMALL", num: 3, color: "green", sub: "GREEN (3)" },
-                        { main: "BIG", num: 6, color: "red", sub: "RED (6)" },
-                        { main: "SMALL", num: 1, color: "green", sub: "GREEN (1)" },
-                        { main: "BIG", num: 5, color: "violet", sub: "VIOLET (5)" },
-                        { main: "SMALL", num: 0, color: "red-violet", sub: "RED+VIOLET (0)" }
-                    ];
-                    let sel = outcomes[hashVal % outcomes.length];
-
-                    mainPredEl.textContent = sel.main;
-                    subPredEl.textContent = `${sel.sub}`;
-                    mainPredEl.style.color = sel.main === "BIG" ? "#00ffff" : "#00ff66";
-                    
-                    if(sel.color === 'red') subPredEl.style.color = "#ff3333";
-                    else if(sel.color === 'green') subPredEl.style.color = "#00ff66";
-                    else if(sel.color === 'violet') subPredEl.style.color = "#cc33ff";
-                    else if(sel.color === 'red-violet') subPredEl.style.color = "#ff33cc";
-
-                    if (lastSpokenPeriod !== activePeriod && timeLeft > 10) {
-                        speakPrediction(sel.main);
-                        lastSpokenPeriod = activePeriod;
-                    }
-                }
-            }
-        }
-
-        setInterval(updateEngine, 1000);
-        updateEngine();
-    </script>
+    // প্রথম লোডেই কল হবে
+    fetchAndAnalyzeMarket();
+  </script>
 </body>
 </html>
